@@ -17,10 +17,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install Ubuntu EGL and OpenGL runtime libraries
+      - name: Install Ubuntu virtual display and Qt runtime libraries
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends libegl1 libopengl0
+          sudo apt-get install -y --no-install-recommends libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0 xvfb xauth
       - name: Install exact test dependencies
         run: |
           npm ci --ignore-scripts
@@ -30,7 +30,7 @@ jobs:
       - name: Verify official release metadata and binary before extraction
         run: python scripts/fetch-tiled.py
       - name: Render original and relocated package, compare literal pixels, exercise missing-image faults
-        run: python scripts/native-gate.py
+        run: xvfb-run --auto-servernum python scripts/native-gate.py
       - name: Upload small test evidence only
         if: always()
         uses: actions/upload-artifact@v4
