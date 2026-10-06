@@ -1,0 +1,55 @@
+name: Browser download and official Tiled verification
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-download-native:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies and standard Ubuntu runtime libraries
+        run: |
+          npm ci --ignore-scripts
+          python -m pip install Pillow==11.3.0
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0 xvfb xauth fonts-noto-cjk poppler-utils
+          fc-cache -f
+      - name: Verify core and build self-contained offline HTML
+        run: npm run verify
+      - name: Prepare independent rejection fixtures
+        run: python scripts/create-browser-fixtures.py
+      - name: Sandboxed Chrome folder import, actual downloads, stale operations, mobile and print
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: |
+          test -x "$CHROMIUM_PATH"
+          npm run test:browser
+      - name: Independently verify actual browser ZIPs, receipts and printed paths
+        run: python scripts/verify-browser.py
+      - name: Download and verify official pinned Tiled consumer
+        run: python scripts/fetch-tiled.py
+      - name: Official Tiled renders actual browser ZIP after relocation, with four image fault controls
+        env:
+          MAP_PARCEL_BROWSER_ZIP: '1'
+        run: xvfb-run --auto-servernum python scripts/native-gate.py
+      - name: Upload browser and native evidence without vendor binaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: map-parcel-browser-native
+          path: |
+            artifacts/browser/
+            artifacts/browser-native/
+            artifacts/native/official-consumer-pin.json
+            dist/map-parcel.html
+          if-no-files-found: error
