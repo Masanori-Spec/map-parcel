@@ -1,0 +1,98 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "Offline HTML opens in Japanese with export blocked",
+      "passed": true
+    },
+    {
+      "name": "Keyboard skip link focuses workspace",
+      "passed": true
+    },
+    {
+      "name": "Keyboard folder picker imports a real directory",
+      "passed": true
+    },
+    {
+      "name": "Actual folder import and keyboard ZIP download preserve exact path/hash oracle",
+      "passed": true,
+      "zipSHA256": "f2cbf7ebf4f6305516a80a937bda0536edbcf0e245ccb4702512fa60a928ce86",
+      "bytes": 5423
+    },
+    {
+      "name": "Language switch preserves folder, selected entry and receipt",
+      "passed": true
+    },
+    {
+      "name": "Supplement is excluded by default, explicit opt-in adds one file and invalidates prior receipt",
+      "passed": true
+    },
+    {
+      "name": "Japanese/English print PDFs and 390/320px mobile reviews have no page overflow",
+      "passed": true
+    },
+    {
+      "name": "Empty folder change event preserves the existing valid review",
+      "passed": true
+    },
+    {
+      "name": "Real folder missing blocks ZIP and stale receipt",
+      "passed": true
+    },
+    {
+      "name": "Real folder outside blocks ZIP and stale receipt",
+      "passed": true
+    },
+    {
+      "name": "Real folder class-default blocks ZIP and stale receipt",
+      "passed": true
+    },
+    {
+      "name": "Real folder case-collision blocks ZIP and stale receipt",
+      "passed": true
+    },
+    {
+      "name": "Real folder malformed blocks ZIP and stale receipt",
+      "passed": true
+    },
+    {
+      "name": "Real folder fragmented blocks ZIP and stale receipt",
+      "passed": true
+    },
+    {
+      "name": "Late folder read cannot overwrite a newer sample",
+      "passed": true
+    },
+    {
+      "name": "Clear cancels pending file reads without reviving results",
+      "passed": true
+    },
+    {
+      "name": "Entry change cancels pending export and prevents stale downloads",
+      "passed": true
+    },
+    {
+      "name": "Repeated completed export is byte-deterministic",
+      "passed": true
+    },
+    {
+      "name": "Saved offline HTML reopens offline without prior user state",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "networkRequests": [],
+  "screenshots": [
+    "01-ja-empty-desktop.png",
+    "02-ja-folder-desktop.png",
+    "03-en-reviewed-desktop.png",
+    "04-ja-mobile-390.png",
+    "04-ja-mobile-320.png",
+    "04-en-mobile-390.png",
+    "04-en-mobile-320.png",
+    "05-en-blocked.png"
+  ],
+  "browserVersion": "154.0.8037.57",
+  "chromiumSandboxRequested": true,
+  "sandboxCommandVerified": true
+}

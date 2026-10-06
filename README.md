@@ -2,7 +2,13 @@
 
 An offline Japanese/English resource packer for a selected Tiled XML map. It preserves original paths and file bytes.
 
-**Status: official native feasibility gate passed. The bounded UI and actual-browser-download gate are implemented; hosted UI verification is pending.**
+**Verified: 62 core tests, 19 sandboxed/offline browser scenarios, actual browser ZIP/receipt checks, Japanese/English mobile/keyboard/print review, and official Tiled rendering after relocation.**
+
+[Browser → Tiled verification](https://github.com/Masanori-Spec/map-parcel/actions/runs/37425815870) · [Native core verification](https://github.com/Masanori-Spec/map-parcel/actions/runs/37425815915)
+
+![MapParcel desktop review showing the selected map, 16 included files and reference reasons](docs/evidence/desktop-en.png)
+
+[Japanese mobile screenshot](docs/evidence/mobile-ja.png)
 
 [Native evidence run](https://github.com/Masanori-Spec/map-parcel/actions/runs/37422232310) verified all 32 expected pixels after relocation and caught four missing-image faults, each of which misleadingly returned exit code 0. See [verification](docs/verification.md).
 

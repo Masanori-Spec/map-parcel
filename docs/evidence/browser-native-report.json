@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "inputZIPSource": "actual sandboxed browser download",
+  "inputZIP_SHA256": "f2cbf7ebf4f6305516a80a937bda0536edbcf0e245ccb4702512fa60a928ce86",
+  "consumer": "Official Tiled 1.12.2 AppImage tmxrasterizer",
+  "entry": "maps/selected.tmx",
+  "expectedDimensions": [
+    8,
+    4
+  ],
+  "literalPixelRows": [
+    "RRYYGBBB",
+    "RRYYBGBB",
+    "RRBBBBMM",
+    "RRBBBBMM"
+  ],
+  "all32PixelsMatchLiteral": true,
+  "originalAndRelocatedPixelsIdentical": true,
+  "originalInputUnavailable": true,
+  "relocatedToUnrelatedDirectory": true,
+  "negativeControls": [
+    {
+      "removed": "art/ground/sprite.png",
+      "exitCode": 0,
+      "pixelMismatchOrMissing": true,
+      "caught": true
+    },
+    {
+      "removed": "art/objects/sprite.png",
+      "exitCode": 0,
+      "pixelMismatchOrMissing": true,
+      "caught": true
+    },
+    {
+      "removed": "art/layers/overlay.png",
+      "exitCode": 0,
+      "pixelMismatchOrMissing": true,
+      "caught": true
+    },
+    {
+      "removed": "art/meta/pixel.png",
+      "exitCode": 0,
+      "pixelMismatchOrMissing": true,
+      "caught": true
+    }
+  ],
+  "exitZeroAloneAccepted": false,
+  "renderSHA256": "ac73d0fa7accab4a7655da91ea13bf27a667bd58ada9e13924baf19d92f91f07"
+}

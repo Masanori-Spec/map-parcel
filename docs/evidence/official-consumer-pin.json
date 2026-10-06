@@ -1,0 +1,17 @@
+{
+  "version": "1.12.2",
+  "release_url": "https://github.com/mapeditor/tiled/releases/tag/v1.12.2",
+  "release_api_url": "https://api.github.com/repos/mapeditor/tiled/releases/tags/v1.12.2",
+  "tag_commit": "1fd9846",
+  "asset": {
+    "name": "Tiled-1.12.2_Linux_x86_64.AppImage",
+    "url": "https://github.com/mapeditor/tiled/releases/download/v1.12.2/Tiled-1.12.2_Linux_x86_64.AppImage",
+    "sha256": "5e0edbff61314f41af3c72c21ec006b363cf12047cc9cfb5bbd63a98bca3721c",
+    "size": 47286776
+  },
+  "metadata_verified": "2026-10-06",
+  "actualSHA256": "5e0edbff61314f41af3c72c21ec006b363cf12047cc9cfb5bbd63a98bca3721c",
+  "actualSize": 47286776,
+  "metadataVerifiedBeforeExecution": true,
+  "binaryVerifiedBeforeExecution": true
+}

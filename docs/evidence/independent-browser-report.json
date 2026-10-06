@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "actualZIPsChecked": 2,
+  "literalRequiredPaths": 16,
+  "originalBytesAndFrozenHashesMatch": true,
+  "receiptHashesMatchActualDownload": true,
+  "explicitSupplementOnly": true,
+  "printPathsVerified": [
+    "ja",
+    "en"
+  ]
+}

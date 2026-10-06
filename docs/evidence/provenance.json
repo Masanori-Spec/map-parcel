@@ -1,0 +1,10 @@
+{
+  "testedCommit": "d79b5e88674b7d6f64ff6f78a02a758f703e62d2",
+  "browserRun": "https://github.com/Masanori-Spec/map-parcel/actions/runs/37425815870",
+  "nativeRun": "https://github.com/Masanori-Spec/map-parcel/actions/runs/37425815915",
+  "browserArtifactSHA256": "1a604f993d35027730173145f2a58a00c27146afcfdda6064555931e96ab231a",
+  "nativeArtifactSHA256": "3596295ae09de8ce66d1bd90a5b9690228f3f587aecb5951c5a57fda5f957cf9",
+  "artifactDigestsVerified": true,
+  "independentReview": "Source, ZIP bytes, exact path and hash oracles, actual native pixels, four negative controls, desktop/mobile and print output accepted",
+  "runtimeChangedDuringDocsCloseout": false
+}
