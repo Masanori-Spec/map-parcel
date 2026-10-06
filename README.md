@@ -1,8 +1,20 @@
 # MapParcel
 
-Native-first feasibility gate for a byte-preserving Tiled map resource packer.
+An offline Japanese/English resource packer for a selected Tiled XML map. It preserves original paths and file bytes.
 
-**Status: local closure tests pass; hosted native gate is pending. There is no UI yet.**
+**Status: official native feasibility gate passed. The bounded UI and actual-browser-download gate are implemented; hosted UI verification is pending.**
+
+[Native evidence run](https://github.com/Masanori-Spec/map-parcel/actions/runs/37422232310) verified all 32 expected pixels after relocation and caught four missing-image faults, each of which misleadingly returned exit code 0. See [verification](docs/verification.md).
+
+## Use it
+
+1. Open `dist/map-parcel.html` in a current browser. It is a self-contained offline file
+2. Choose a common parent folder containing the map and its assets, or try the original sample
+3. Select the entry TMX, inspect each included path and its reference reason
+4. Optionally select supplementary notes or attribution files. Nothing is selected automatically
+5. Save the ZIP, then save its JSON SHA-256 receipt or print the review
+
+Everything is processed locally. There are no uploads, telemetry, accounts or runtime network requests. A folder-selection-capable browser is required; mobile layouts are supported, but folder selection depends on the device/browser. The saved offline HTML starts fresh without retaining the imported folder or receipt.
 
 MapParcel takes a selected XML `.tmx` map and copies its explicitly referenced dependency closure into a ZIP. Original file paths, GIDs and every source byte stay unchanged. It is a narrow sharing tool, not a complete Tiled project exporter or a game dependency scanner.
 
@@ -27,7 +39,7 @@ npm ci --ignore-scripts
 npm run verify
 ```
 
-This runs unit tests, creates original synthetic assets, writes the selected-map ZIP, and checks it using Python's independent ZIP reader against a literal 16-path set and frozen SHA-256 values. The fixture generator does not write the oracle. No Tiled binary is installed or run locally.
+This runs unit tests, builds the offline HTML, creates original synthetic assets, writes the selected-map ZIP, and checks it using Python's independent ZIP reader against a literal 16-path set and frozen SHA-256 values. The fixture generator does not write the oracle. No Tiled binary is installed or run locally. The HTML bundles the source-only XML parser dependency; its existing license is preserved in `THIRD_PARTY_NOTICES.txt` and inside the HTML. No original-code or fixture license grant is added.
 
 ## Hosted native verification
 
@@ -42,6 +54,10 @@ The native gate:
 5. Removes each of four required PNGs in turn: ground, template object, image layer and metatile image. Each negative control must cause a pixel mismatch, missing image or nonzero exit
 
 Exit status zero alone is never a pass. Artifacts include the ZIP, file/edge manifest, frozen-byte verification report, original/relocated/negative renders, consumer provenance and native report. They exclude vendor binaries.
+
+## Browser verification
+
+`browser-native.yml` uses sandboxed hosted Chrome with networking disabled. It tests real folder selection, actual ZIP and JSON downloads, supplement opt-in, safe rejection, stale import/export cancellation, deterministic repeat exports, keyboard operation, Japanese/English mobile layouts and print PDFs. Python independently checks the downloaded ZIPs and receipts. The actual selected ZIP is then handed to the official Tiled relocation/pixel/negative-control gate. A UI badge or browser exit status is never used as proof of native compatibility.
 
 ## Why this exists
 

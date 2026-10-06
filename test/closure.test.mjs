@@ -147,3 +147,13 @@ for (const value of ['prefix<![CDATA[secret.txt]]>', 'prefix<!--split-->secret.t
 test('reject file property with mixed attribute and content', () => {
   assert.throws(() => planPackage(files('<map><properties><property type="file" value="a.txt">b.txt</property></properties></map>'), 'maps/main.tmx'), code('AMBIGUOUS_FILE_VALUE'));
 });
+
+test('valid NFC Unicode file paths are preserved; decomposed input is rejected', () => {
+  const input=new Map([['地図/入口.tmx',bytes('<map><properties><property type="file" value="../説明.txt"/></properties></map>')],['説明.txt',bytes('説明')]]);
+  assert.deepEqual(planPackage(input,'地図/入口.tmx').paths,['地図/入口.tmx','説明.txt']);
+  const invalid=files('<map/>');invalid.set('e\u0301.txt',bytes('x'));assert.throws(()=>planPackage(invalid,'maps/main.tmx'),code('UNSAFE_PATH'));
+});
+test('input byte and reference count limits fail closed', () => {
+  const tooBig=files('<map/>');tooBig.set('large.bin',new Uint8Array(LIMITS.bytes+1));assert.throws(()=>planPackage(tooBig,'maps/main.tmx'),code('INPUT_LIMIT'));
+  const many=files('<map><properties>'+`<property type="file" value="../a.txt"/>`.repeat(LIMITS.references+1)+'</properties></map>');many.set('a.txt',bytes('x'));assert.throws(()=>planPackage(many,'maps/main.tmx'),code('REFERENCE_LIMIT'));
+});

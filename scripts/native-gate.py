@@ -12,7 +12,9 @@ import zipfile
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-ART = ROOT / 'artifacts/native'
+BROWSER_MODE = os.environ.get('MAP_PARCEL_BROWSER_ZIP') == '1'
+ART = ROOT / ('artifacts/browser-native' if BROWSER_MODE else 'artifacts/native')
+ARCHIVE = ROOT / ('artifacts/browser/browser-selected.zip' if BROWSER_MODE else 'artifacts/selected-map.zip')
 ART.mkdir(parents=True, exist_ok=True)
 EXPECTED = json.loads((ROOT / 'test/expected-oracle.json').read_text())
 PALETTE = EXPECTED['palette']
@@ -48,14 +50,14 @@ def main():
     spec = importlib.util.spec_from_file_location('verify_package', ROOT / 'scripts/verify-package.py')
     verifier = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(verifier)
-    verifier.verify_package()
+    verifier.verify_package(ARCHIVE, ART / 'zip-report.json')
     source = ROOT / 'artifacts/fixture-source'
     original = ART / 'original.png'
     original_code = render(source / EXPECTED['entry'], original, 'original')
     assert original_code == 0, f'Original consumer failed: {original_code}'
     assert matches_literal(original), f'Original render differs from literal 8x4 pixel oracle: {read_pixels(original) if original.is_file() else "no image"}'
     relocated = Path(tempfile.mkdtemp(prefix='unrelated-parcel-', dir=os.environ['RUNNER_TEMP']))
-    with zipfile.ZipFile(ROOT / 'artifacts/selected-map.zip') as archive:
+    with zipfile.ZipFile(ARCHIVE) as archive:
         archive.extractall(relocated)
     # This is generated test input only. No user source data is removed.
     shutil.rmtree(source)
@@ -78,7 +80,7 @@ def main():
         assert code != 0 or mismatch, f'Negative control silently passed after removing {required}'
         controls.append({'removed': required, 'exitCode': code, 'pixelMismatchOrMissing': mismatch, 'caught': True})
         png.write_bytes(content)
-    report = {'status': 'PASS', 'consumer': 'Official Tiled 1.12.2 AppImage tmxrasterizer', 'entry': EXPECTED['entry'], 'expectedDimensions': [8, 4], 'literalPixelRows': EXPECTED['pixelRows'], 'all32PixelsMatchLiteral': True, 'originalAndRelocatedPixelsIdentical': True, 'originalInputUnavailable': not source.exists(), 'relocatedToUnrelatedDirectory': True, 'negativeControls': controls, 'exitZeroAloneAccepted': False, 'renderSHA256': hashlib.sha256(result.read_bytes()).hexdigest()}
+    report = {'status': 'PASS', 'inputZIPSource': 'actual sandboxed browser download' if BROWSER_MODE else 'core harness', 'inputZIP_SHA256': hashlib.sha256(ARCHIVE.read_bytes()).hexdigest(), 'consumer': 'Official Tiled 1.12.2 AppImage tmxrasterizer', 'entry': EXPECTED['entry'], 'expectedDimensions': [8, 4], 'literalPixelRows': EXPECTED['pixelRows'], 'all32PixelsMatchLiteral': True, 'originalAndRelocatedPixelsIdentical': True, 'originalInputUnavailable': not source.exists(), 'relocatedToUnrelatedDirectory': True, 'negativeControls': controls, 'exitZeroAloneAccepted': False, 'renderSHA256': hashlib.sha256(result.read_bytes()).hexdigest()}
     (ART / 'native-report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
 

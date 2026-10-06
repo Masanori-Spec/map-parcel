@@ -7,10 +7,10 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 
-def verify_package():
+def verify_package(archive_path=None, output_path=None):
     expected = json.loads((ROOT / 'test/expected-oracle.json').read_text())
     source = ROOT / 'artifacts/fixture-source'
-    with zipfile.ZipFile(ROOT / 'artifacts/selected-map.zip') as archive:
+    with zipfile.ZipFile(archive_path or ROOT / 'artifacts/selected-map.zip') as archive:
         names = archive.namelist()
         assert len(names) == len(set(names)), 'Duplicate ZIP entries'
         assert sorted(names) == expected['paths'], f'Wrong closure: {sorted(names)}'
@@ -22,7 +22,7 @@ def verify_package():
         assert not set(names) & set(expected['excluded']), 'Unused/supplemental file leaked into closure'
         assert archive.testzip() is None, 'ZIP CRC mismatch'
     report = {'status': 'PASS', 'entry': expected['entry'], 'fileCount': len(names), 'paths': names, 'independentReader': 'Python standard-library zipfile', 'sourceBytesUnchanged': True, 'literalPathSetMatches': True, 'frozenSHA256Matches': True, 'unusedFilesExcluded': True}
-    (ROOT / 'artifacts/zip-report.json').write_text(json.dumps(report, indent=2) + '\n')
+    (output_path or ROOT / 'artifacts/zip-report.json').write_text(json.dumps(report, indent=2) + '\n')
     print('PASS: exact 16-file closure, all source bytes and frozen SHA256 values match')
     return report
 

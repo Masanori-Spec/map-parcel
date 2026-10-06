@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Tiledの選択マップと明示的な依存ファイルを、元のバイトのままZIPにまとめるローカルツール。">
+<title>MapParcel · 地図を、そのまま届ける</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#workspace" data-i18n="skip">作業エリアへ</a>
+<header class="topbar">
+ <a class="brand" href="#top" aria-label="MapParcel"><span class="brand-mark" aria-hidden="true">▧</span>MapParcel<span class="version">0.2</span></a>
+ <div class="top-actions"><span class="privacy-dot" data-i18n="local">ローカル処理</span><div class="language" aria-label="Language"><button id="lang-ja" type="button" aria-pressed="true">日本語</button><button id="lang-en" type="button" aria-pressed="false">English</button></div></div>
+</header>
+<main id="top">
+ <section class="hero">
+  <div><p class="eyebrow">TILED MAP RESOURCE PACKER</p><h1 data-i18n="title">地図をひとつ。<br>必要なファイルだけ。</h1><p class="lede" data-i18n="lede">選んだTMXが参照する素材を集めて、元の階層・元のバイトのままZIPに。受け渡し前の確認まで、ブラウザ内で完結します。</p><div class="scope-tags"><span>TMX / TSX / TX</span><span data-i18n="noRewrite">パスの書換えなし</span><span data-i18n="noUpload">アップロードなし</span></div></div>
+  <div class="parcel-illustration" aria-hidden="true"><div class="map-sheet"><span>ENTRY MAP</span><div class="pixel-map"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><b>selected.tmx</b></div><div class="file-chip chip-a">TSX <span>tileset</span></div><div class="file-chip chip-b">PNG <span>image</span></div><div class="file-chip chip-c">TX <span>template</span></div><span class="closure-label" data-i18n="sameBytes">SAME PATHS. SAME BYTES.</span></div>
+ </section>
+ <section id="workspace" tabindex="-1" aria-label="Map packaging workspace">
+  <div class="work-grid">
+   <section class="panel input-panel" aria-labelledby="import-heading">
+    <div class="section-heading"><span class="step">01</span><h2 id="import-heading" data-i18n="importHeading">入力フォルダを選ぶ</h2></div>
+    <p class="muted" data-i18n="importHint">マップと素材がすべて入る共通の親フォルダを選んでください。フォルダの外への参照は止めます。</p>
+    <div class="folder-zone"><span class="folder-icon" aria-hidden="true">▱</span><label class="button primary" for="folder-input" data-i18n="chooseFolder">フォルダを選択</label><input id="folder-input" type="file" webkitdirectory multiple aria-describedby="limits-note"><p id="folder-summary" data-i18n="nothingSelected">まだ選ばれていません</p><button id="sample" class="text-button" type="button" data-i18n="trySample">サンプルで試す →</button></div>
+    <p id="limits-note" class="small muted" data-i18n="limits">最大2,048ファイル・合計128MiB。フォルダ選択対応ブラウザを使用してください。</p>
+    <label class="field-label" for="entry" data-i18n="entryLabel">入口となるTMX</label><select id="entry" disabled><option value="" data-i18n="entryPlaceholder">フォルダ選択後に指定</option></select>
+    <div class="input-foot"><span id="entry-count" class="small muted"></span><button id="reset" type="button" class="text-button" disabled data-i18n="reset">クリア</button></div>
+   </section>
+   <section class="panel export-panel" aria-labelledby="export-heading">
+    <div class="section-heading"><span class="step">02</span><h2 id="export-heading" data-i18n="reviewHeading">確認して、まとめる</h2></div>
+    <div class="metrics"><div><strong id="file-count">—</strong><span data-i18n="included">含めるファイル</span></div><div><strong id="byte-count">—</strong><span data-i18n="sourceSize">元ファイルの合計</span></div><div><strong id="excluded-count">—</strong><span data-i18n="excluded">含めないファイル</span></div></div>
+    <div id="status" class="status" role="status" aria-live="polite" data-state="empty" data-i18n="initialStatus">入口マップを選ぶと、参照先を確認します。</div>
+    <button id="export" type="button" class="button primary export-button" disabled data-i18n="export">ZIPを保存</button>
+    <div class="secondary-actions"><button id="receipt" type="button" class="button secondary" disabled data-i18n="receipt">レシートを保存</button><button id="print" type="button" class="button secondary" disabled data-i18n="print">確認内容を印刷</button></div>
+    <p class="small muted" data-i18n="receiptHint">ZIP保存後に、全ファイルのSHA-256と参照元を記録したJSONレシートも保存できます。</p>
+   </section>
+  </div>
+  <section id="results" class="panel results-panel" aria-labelledby="results-heading" hidden>
+   <div class="results-heading"><div class="section-heading"><span class="step">03</span><h2 id="results-heading" data-i18n="pathsHeading">含まれる理由を確認</h2></div><span id="entry-badge" class="path-badge"></span></div>
+   <p class="muted small" data-i18n="pathsHint">フォルダ階層は保持されます。同じ名前の画像も、別フォルダなら別ファイルです。</p>
+   <ol id="path-list" class="path-list"></ol>
+   <details id="supplements"><summary data-i18n="supplementsHeading">補足ファイルを選ぶ（任意）</summary><p class="small muted" data-i18n="supplementsHint">ライセンスや説明書などを明示的に追加できます。補足ファイルの依存先は調べません。選択しても素材の共有・再利用の権利は付与されません。</p><div id="supplement-list" class="supplement-list"></div><p id="no-supplements" class="small muted" hidden data-i18n="noSupplements">追加できるファイルはありません。</p></details>
+   <div id="receipt-preview" class="receipt-preview" hidden><span data-i18n="zipDigest">生成ZIPのSHA-256</span><code id="zip-digest"></code></div>
+  </section>
+  <section class="boundaries"><div><h2 data-i18n="boundaryTitle">「明示された参照先」のための道具です</h2><p data-i18n="boundaryBody">外部タイルセット・画像・オブジェクトテンプレート・file型プロパティを追跡します。プロジェクトのクラス既定値、任意の文字列やスクリプトに隠れた依存先は対象外です。完全なゲーム／プロジェクトの出力ではありません。</p></div><details><summary data-i18n="unsupportedTitle">止める入力について</summary><p data-i18n="unsupportedBody">ルート外・絶対パス・URL・不足ファイル・名前の衝突・循環・未対応XMLを検出するとZIP保存を止めます。JSON形式、プロジェクト／ワールド、SVG、埋込み画像、カスタムクラス、曖昧なfile値は未対応です。画像の実データやゲーム側の動作までは検証しません。</p></details></section>
+ </section>
+ <section id="print-meta" class="print-only"><h2>MapParcel</h2><p id="print-summary"></p><p data-i18n="printBoundary">これは明示的なファイル参照の確認記録です。完全なプロジェクトや素材の共有権限を保証するものではありません。</p></section>
+</main>
+<footer><span>MapParcel</span><p data-i18n="footer">通信せずに処理。元のファイルは変更しません。</p><a id="offline" href="#" data-i18n="offline">オフラインHTMLを保存</a></footer>
+<script src="app.js"></script>
+</body>
+</html>
