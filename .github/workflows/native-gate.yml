@@ -1,0 +1,40 @@
+name: Native feasibility gate
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install exact test dependencies
+        run: |
+          npm ci --ignore-scripts
+          python -m pip install Pillow==11.3.0
+      - name: Unit and independent ZIP verification
+        run: npm run verify
+      - name: Verify official release metadata and binary before extraction
+        run: python scripts/fetch-tiled.py
+      - name: Render original and relocated package, compare literal pixels, exercise missing-image faults
+        run: python scripts/native-gate.py
+      - name: Upload small test evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: map-parcel-native-gate
+          path: |
+            artifacts/native/
+            artifacts/zip-report.json
+            artifacts/package-manifest.json
+            artifacts/selected-map.zip
+          if-no-files-found: error
