@@ -1,0 +1,85 @@
+{
+  "entry": "maps/selected.tmx",
+  "paths": [
+    "art/ground/sprite.png",
+    "art/layers/overlay.png",
+    "art/meta/pixel.png",
+    "art/objects/sprite.png",
+    "art/property/pixel.png",
+    "data/chain.txt",
+    "data/settings.txt",
+    "data/template-note.txt",
+    "data/tile-note.txt",
+    "extras/property.tsx",
+    "maps/selected.tmx",
+    "metamaps/mini.tmx",
+    "templates/marker.tx",
+    "tiles/ground.tsx",
+    "tiles/meta.tsx",
+    "tiles/objects/marker.tsx"
+  ],
+  "excluded": [
+    "NOTICE-assets.txt",
+    "unused/secret.txt",
+    "unused/sprite.png",
+    "unused/unused.tsx"
+  ],
+  "width": 8,
+  "height": 4,
+  "palette": {
+    "R": [
+      230,
+      40,
+      60,
+      255
+    ],
+    "Y": [
+      250,
+      210,
+      30,
+      255
+    ],
+    "G": [
+      20,
+      210,
+      100,
+      255
+    ],
+    "M": [
+      210,
+      40,
+      220,
+      255
+    ],
+    "B": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "pixelRows": [
+    "RRYYGBBB",
+    "RRYYBGBB",
+    "RRBBBBMM",
+    "RRBBBBMM"
+  ],
+  "hashes": {
+    "art/ground/sprite.png": "fd4703733ae06d693dbc324a32196353a5a709375bdcb29aefa7095308ac6052",
+    "art/layers/overlay.png": "9689e16efc08866e0cfd81e034a84f46529e4efdd3ff68aba0d2f2c5d041c5a2",
+    "art/meta/pixel.png": "6db750c03961e87eb490999dccb4356d48f31b38c506642472526d2d2e3d1058",
+    "art/objects/sprite.png": "dc717a7279ae8b83442abb5e547fbdb3a98c848d4d44ec0ac167493cd2bc4c23",
+    "art/property/pixel.png": "046b0101a6eb792734177800a278ce8c7c0c237aada85286d44f08b2886ab8a4",
+    "data/chain.txt": "e811adb4c33f44f7c3e35beece3288dc0aef7cb6d033900813217313a68fbeff",
+    "data/settings.txt": "cdce40d702208a5c4eb733aec7ec281580161f92b4f6c6e48f5eba00124d1d4e",
+    "data/template-note.txt": "d05d6edc70ef4d024b7a1bc965ba24b1cf54c083a356efa1db4cccd395f5e273",
+    "data/tile-note.txt": "d89d5cb6a498d60c8d76ac23dfd2f5e93414aedd899b51dc22118ba45bac1002",
+    "extras/property.tsx": "406134e721da92ec790b0a7c5f358eceb0a380222aa493c09c46e4dd3b32059e",
+    "maps/selected.tmx": "d794b344be4431a396c3835780093f98772bbd9d71a5ddb7859865fef1054458",
+    "metamaps/mini.tmx": "ff388222238e5430218057018dbedd77feaa60c277aa7c8220274237c4c5d8f5",
+    "templates/marker.tx": "aa1b64d72d1d3f9a61bd3b84bd7dcd9d93e154aefa4da8ffbd41a7c1700aa163",
+    "tiles/ground.tsx": "ee2ef121b961bfa9bc4172b58bc08f7cc2db7abc99ea9c5ba5a0c3ff7fffdf32",
+    "tiles/meta.tsx": "bfb1652b8fbd5f40fb572aa8e8aa7b696d6f684808fc2251b7ed8cb0765d06bc",
+    "tiles/objects/marker.tsx": "93f10560d44c560eb301b500e06429242d68baaa153ec7d2a9cec769911d231c"
+  }
+}

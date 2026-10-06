@@ -1,0 +1,4 @@
+node_modules/
+artifacts/
+.native/
+__pycache__/
