@@ -33,7 +33,8 @@ def main():
     assert os.environ.get('GITHUB_ACTIONS') == 'true', 'Native consumer gate is hosted-CI-only'
     app = Path(os.environ['RUNNER_TEMP']) / 'map-parcel-tiled/squashfs-root/AppRun'
     assert app.is_file()
-    env = dict(os.environ, QT_QPA_PLATFORM='offscreen')
+    assert os.environ.get('DISPLAY'), 'Use xvfb-run: the official AppImage includes only the xcb platform plugin'
+    env = dict(os.environ, QT_QPA_PLATFORM='xcb')
     runtime = Path(tempfile.mkdtemp(prefix='map-parcel-qt-', dir=os.environ['RUNNER_TEMP']))
     runtime.chmod(0o700)
     env['XDG_RUNTIME_DIR'] = str(runtime)
