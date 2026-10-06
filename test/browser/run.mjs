@@ -34,7 +34,7 @@ try{
  }
  check('Japanese/English print PDFs and 390/320px mobile reviews have no page overflow');await page.setViewportSize({width:1440,height:1100});
  await page.locator('#lang-en').click();
- const initial=await page.locator('#folder-summary').textContent();await page.locator('#folder-input').setInputFiles([]);await expect(page.locator('#folder-summary')).toHaveText(initial);await ready();check('Empty/cancelled folder selection preserves the existing valid review');
+ const initial=await page.locator('#folder-summary').textContent();await page.locator('#folder-input').evaluate(input=>{input.value='';input.dispatchEvent(new Event('change',{bubbles:true}));});await expect(page.locator('#folder-summary')).toHaveText(initial);await ready();check('Empty folder change event preserves the existing valid review');
  for(const [name,code] of [['missing','MISSING_FILE'],['outside','ROOT_ESCAPE'],['class-default','CLASS_DEFAULTS'],['case-collision','PATH_COLLISION'],['malformed','INVALID_XML'],['fragmented','AMBIGUOUS_FILE_VALUE']]){await folder('browser-inputs/'+name);await expect(page.locator('#status')).toContainText(code);await expect(page.locator('#export')).toBeDisabled();await expect(page.locator('#receipt')).toBeDisabled();check(`Real folder ${name} blocks ZIP and stale receipt`);}
  await shot('05-en-blocked.png');
  await page.evaluate(()=>{window.__arrayBuffer=File.prototype.arrayBuffer;File.prototype.arrayBuffer=async function(){await new Promise(resolve=>setTimeout(resolve,700));return window.__arrayBuffer.call(this);};});
